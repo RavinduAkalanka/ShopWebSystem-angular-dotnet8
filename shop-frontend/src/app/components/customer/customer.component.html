@@ -1,0 +1,183 @@
+<div class="height: 100vh; flex flex-col">
+  <!-- Header Section -->
+  <h1 class="text-2xl font-bold mb-0 p-4 bg-white">Customers</h1>
+
+  <!-- Submit Button -->
+  <div>
+    <button
+      type="submit"
+      (click)="openModel()"
+      class="bg-blue-600 text-white px-4 mx-4 py-2 mt-3 mb-5 rounded hover:bg-blue-700"
+    >
+      Add Customer
+    </button>
+  </div>
+
+  <!-- Modal Popup -->
+  <div
+    *ngIf="showModel"
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+  >
+    <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+      <h2 class="text-xl font-bold mb-4">Add Customer</h2>
+
+      <form [formGroup]="customerForm" (ngSubmit)="addCustomer()">
+        <!-- Customer Name -->
+        <div class="mb-4">
+          <label class="block text-sm font-medium mb-1">Customer Name</label>
+          <input
+            type="text"
+            name="name"
+            formControlName="customerName"
+            placeholder="Enter name"
+            required
+            class="border px-4 py-2 w-full rounded"
+          />
+          <div *ngIf="customerForm.controls['customerName'].touched">
+            <div
+              *ngIf="customerForm.controls['customerName'].errors?.['required']"
+            >
+              <span class="text-red-500">This is Required</span>
+            </div>
+            <div
+              *ngIf="customerForm.controls['customerName'].errors?.['minlength']"
+            >
+              <span class="text-red-500">Min 4 chars required.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="mb-4">
+          <label class="block text-sm font-medium mb-1">Email</label>
+          <input
+            type="email"
+            name="email"
+            formControlName="email"
+            placeholder="Enter email"
+            required
+            class="border px-4 py-2 w-full rounded"
+          />
+          <div *ngIf="customerForm.controls['email'].touched">
+            <div *ngIf="customerForm.controls['email'].errors?.['required']">
+              <span class="text-red-500">This is Required</span>
+            </div>
+            <div *ngIf="customerForm.controls['email'].errors?.['email']">
+              <span class="text-red-500">Enter valid email</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Phone No -->
+        <div class="mb-4">
+          <label class="block text-sm font-medium mb-1">Phone No</label>
+          <input
+            type="text"
+            name="phoneNo"
+            formControlName="phoneNo"
+            placeholder="Enter phone number"
+            required
+            class="border px-4 py-2 w-full rounded"
+          />
+          <div *ngIf="customerForm.controls['phoneNo'].touched">
+            <div *ngIf="customerForm.controls['phoneNo'].errors?.['required']">
+              <span class="text-red-500">This is Required</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex justify-end space-x-2">
+          <button
+            (click)="closeModel()"
+            type="button"
+            class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            [disabled]="!customerForm.valid"
+            class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          >
+          {{ isEditMode ? 'Update' : 'Submit' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!--SuccessMsg and ErrorMsg-->
+  <div
+    *ngIf="successMessage"
+    class="success-message text-green-500 mt-4 p-4 bg-green-100"
+  >
+    {{ successMessage }}
+  </div>
+  <div
+    *ngIf="errorMessage"
+    class="error-message text-red-500 mt-4 p-4 bg-red-100"
+  >
+    {{ errorMessage }}
+  </div>
+
+  <div
+    *ngIf="isLoading"
+    class="fixed inset-0 bg-white bg-opacity-70 flex items-center justify-center z-[9999]"
+  >
+    <div
+      class="w-10 h-10 border-4 border-gray-200 border-t-blue-500 rounded-full animate-spin"
+    ></div>
+  </div>
+
+  <!-- Customer Table -->
+  <div class="flex-1 bg-white">
+    <table class="table-auto border-collapse w-full">
+      <thead class="sticky top-0 bg-white z-10">
+        <tr class="bg-gray-100">
+          <th class="border px-4 py-2 text-center">Customer Name</th>
+          <th class="border px-4 py-2 text-center">Email</th>
+          <th class="border px-4 py-2 text-center">Phone No</th>
+          <th class="border px-4 py-2 text-center">Registration Date</th>
+          <th class="border px-4 py-2 text-center">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let customer of CustomerList| paginate: { itemsPerPage: 7, currentPage: p } let i = index"
+          class="hover:bg-gray-50"
+        >
+          <td class="border px-4 py-2 text-center">
+            {{ customer.customerName }}
+          </td>
+          <td class="border px-4 py-2 text-center">{{ customer.email }}</td>
+          <td class="border px-4 py-2 text-center">{{ customer.phoneNo }}</td>
+          <td class="border px-4 py-2 text-center">
+            {{ customer.registrationDate | date : "dd MMM yyyy" }}
+          </td>
+          <td class="border px-4 py-2 text-center">
+            <div class="flex justify-center space-x-2">
+              <button
+              (click)="editCustomer(customer)"
+                class="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600"
+              >
+                Edit
+              </button>
+              <button
+                (click)="deleteCustomer(customer.customerId)"
+                class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
+              >
+                Delete
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+   <!-- Pagination Controls -->
+   <div class="flex justify-center h-[38px] pt-1  fixed bottom-0 left-0 right-0 bg-white z-10 mb-[-2]">
+    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+  </div>
+</div>

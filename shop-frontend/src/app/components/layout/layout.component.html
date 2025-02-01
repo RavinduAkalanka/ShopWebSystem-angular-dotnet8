@@ -1,0 +1,81 @@
+<nav class="sticky bg-gray-800 text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-16">
+        <!-- Logo -->
+        <a href="#" class="flex items-center text-xl font-bold">My Shop</a>
+  
+        <!-- Navigation Links -->
+        <div class="flex-grow flex justify-center items-center space-x-4">
+          <!-- Dashboard -->
+          <a href="/dashboard" class="hover:text-gray-400">Dashboard</a>
+  
+          <!-- Admin Dropdown -->
+          <div class="relative group">
+            <button
+              id="admin-button"
+              class="flex items-center focus:outline-none hover:text-gray-400"
+            >
+              Admin
+              <svg
+                class="ml-1 w-4 h-4 fill-current"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  d="M5.293 7.707a1 1 0 011.414 0L10 11.086l3.293-3.379a1 1 0 011.414 1.414l-4 4.122a1 1 0 01-1.414 0l-4-4.122a1 1 0 010-1.414z"
+                />
+              </svg>
+            </button>
+            <div
+              id="admin-dropdown"
+              class="absolute hidden group-focus-within:block bg-white text-gray-800 py-2 mt-2 rounded shadow-md w-32"
+            >
+              <a
+                routerLink="/inventory"
+                class="block px-4 py-2 hover:bg-gray-100"
+                onclick="selectDropdownItem('Inventory')"
+              >
+                Inventory
+              </a>
+              <a
+                href="/customer"
+                class="block px-4 py-2 hover:bg-gray-100"
+              >
+                Customers
+              </a>
+            </div>
+          </div>
+        </div>
+        <div>
+          <button (click)="signOut()" class="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700">
+            Sign Out
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+  
+  <script>
+    // Toggle dropdown visibility on click
+    const adminButton = document.getElementById("admin-button");
+    const adminDropdown = document.getElementById("admin-dropdown");
+  
+    adminButton.addEventListener("click", (e) => {
+      e.stopPropagation(); // Prevent event bubbling
+      adminDropdown.classList.toggle("hidden");
+    });
+  
+    // Close dropdown if clicking outside
+    document.addEventListener("click", () => {
+      if (!adminDropdown.classList.contains("hidden")) {
+        adminDropdown.classList.add("hidden");
+      }
+    });
+  
+    // Handle dropdown item selection
+    function selectDropdownItem(item) {
+    alert(`You selected: ${item}`);
+    adminDropdown.classList.add("hidden"); // Close the dropdown
+  }
+  </script>
+ <router-outlet></router-outlet>

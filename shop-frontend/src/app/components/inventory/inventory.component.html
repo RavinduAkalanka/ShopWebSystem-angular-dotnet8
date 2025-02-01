@@ -1,0 +1,240 @@
+<div class="height: 100vh; flex flex-col">
+  <!-- Header Section -->
+  <div class="flex justify-between items-center p-4 bg-white">
+    <!-- Title -->
+    <h1 class="text-2xl font-bold mb-0">Inventory</h1>
+
+    <!-- Download PDF Button -->
+    <button
+      [disabled]="ProductsList.length === 0"
+      (click)="generatePDF()"
+      class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 disabled:bg-gray-400"
+    >
+      Download Inventory as PDF
+    </button>
+  </div>
+
+  <!-- Inventory Form -->
+  <form
+    #productForm="ngForm"
+    (ngSubmit)="isEditMode ? updateProduct() : addProducts()"
+    class="flex items-center space-x-4 mb-6 w-full p-1 bg-white"
+  >
+    <!-- Product Code -->
+    <div class="flex-1">
+      <label class="font-semibold">Product Code</label>
+      <input
+        type="text"
+        #productCode="ngModel"
+        required
+        minlength="4"
+        [(ngModel)]="productObj.productCode"
+        name="productCode"
+        placeholder="Product ID"
+        class="border px-4 py-2 rounded w-full"
+      />
+      <div *ngIf="productCode.touched && productCode.invalid">
+        <div *ngIf="productCode.errors?.['required']">
+          <span class="text-red-500">This is required</span>
+        </div>
+        <div *ngIf="productCode.errors?.['minlength']">
+          <span class="text-red-500">Min 4 Chars required</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product Name -->
+    <div class="flex-1">
+      <label class="font-semibold">Product Name</label>
+      <input
+        type="text"
+        #productName="ngModel"
+        required
+        [(ngModel)]="productObj.productName"
+        name="productName"
+        placeholder="Product Name"
+        class="border px-4 py-2 rounded w-full"
+      />
+      <div *ngIf="productName.touched && productName.invalid">
+        <div *ngIf="productName.errors?.['required']">
+          <span class="text-red-500">This is required</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product Category -->
+    <div class="flex-1">
+      <label class="font-semibold">Product Category</label>
+      <input
+        type="text"
+        #productCategory="ngModel"
+        required
+        [(ngModel)]="productObj.productCategory"
+        name="productCategory"
+        placeholder="Product Category"
+        class="border px-4 py-2 rounded w-full"
+      />
+      <div *ngIf="productCategory.touched && productCategory.invalid">
+        <div *ngIf="productCategory.errors?.['required']">
+          <span class="text-red-500">This is required</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Unit Price -->
+    <div class="flex-1">
+      <label class="font-semibold">Unit Price ($)</label>
+      <input
+        type="text"
+        #unitPrice="ngModel"
+        required
+        [(ngModel)]="productObj.unitPrice"
+        name="unitPrice"
+        placeholder="Unit Price"
+        class="border px-4 py-2 rounded w-full"
+      />
+      <div *ngIf="unitPrice.touched && unitPrice.invalid">
+        <div *ngIf="unitPrice.errors?.['required']">
+          <span class="text-red-500">This is required</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stock Available -->
+    <div class="flex-1">
+      <label class="font-semibold">Stock Available</label>
+      <input
+        type="number"
+        #stock="ngModel"
+        required
+        [(ngModel)]="productObj.stock"
+        name="stock"
+        placeholder="Stock"
+        class="border px-4 py-2 rounded w-full"
+      />
+      <div *ngIf="stock.touched && stock.invalid">
+        <div *ngIf="stock.errors?.['required']">
+          <span class="text-red-500">This is required</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reorder Point -->
+    <div class="flex-1">
+      <label class="font-semibold">Reorder Point</label>
+      <input
+        type="number"
+        #reorderPoint="ngModel"
+        required
+        [(ngModel)]="productObj.reorderPoint"
+        name="reorderPoint"
+        placeholder="Reorder Point"
+        class="border px-4 py-2 rounded w-full"
+      />
+      <div *ngIf="reorderPoint.touched && reorderPoint.invalid">
+        <div *ngIf="reorderPoint.errors?.['required']">
+          <span class="text-red-500">This is required</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Submit Button -->
+    <div>
+      <button
+        type="submit"
+        [disabled]="productForm.invalid"
+        class="bg-blue-600 text-white px-4 py-2 mt-5 rounded hover:bg-blue-700"
+      >
+        {{ isEditMode ? "Update" : "Submit" }}
+      </button>
+    </div>
+  </form>
+
+  <!-- Success and Error Messages -->
+  <div
+    *ngIf="successMessage"
+    class="success-message text-green-500 mt-4 p-4 bg-green-100"
+  >
+    {{ successMessage }}
+  </div>
+  <div
+    *ngIf="errorMessage"
+    class="error-message text-red-500 mt-4 p-4 bg-red-100"
+  >
+    {{ errorMessage }}
+  </div>
+
+  <div
+    *ngIf="isLoading"
+    class="fixed inset-0 bg-white bg-opacity-70 flex items-center justify-center z-[9999]"
+  >
+    <div
+      class="w-10 h-10 border-4 border-gray-200 border-t-blue-500 rounded-full animate-spin"
+    ></div>
+  </div>
+
+  <!-- Inventory Table -->
+  <div *ngIf="!isLoading" class="flex-1 bg-white">
+    <table class="table-auto border-collapse w-full">
+      <thead class="sticky top-0 bg-white z-10">
+        <tr class="bg-gray-100">
+          <th class="border px-4 py-2 text-center">Product Code</th>
+          <th class="border px-4 py-2 text-center">Product Name</th>
+          <th class="border px-4 py-2 text-center">Product Category</th>
+          <th class="border px-4 py-2 text-center">Unit Price ($)</th>
+          <th class="border px-4 py-2 text-center">Stock Available</th>
+          <th class="border px-4 py-2 text-center">Reorder Point</th>
+          <th class="border px-4 py-2 text-center">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="
+            let product of ProductsList
+              | paginate : { itemsPerPage: 7, currentPage: p };
+            let i = index
+          "
+          class="hover:bg-gray-50"
+        >
+          <td class="border px-4 py-2 text-center">
+            {{ product.productCode }}
+          </td>
+          <td class="border px-4 py-2 text-center">
+            {{ product.productName }}
+          </td>
+          <td class="border px-4 py-2 text-center">
+            {{ product.productCategory }}
+          </td>
+          <td class="border px-4 py-2 text-right">{{ product.unitPrice }}</td>
+          <td class="border px-4 py-2 text-right">{{ product.stock }}</td>
+          <td class="border px-4 py-2 text-right">
+            {{ product.reorderPoint }}
+          </td>
+          <td class="border px-4 py-2 text-center">
+            <div class="flex justify-center space-x-2">
+              <button
+                (click)="editProduct(product)"
+                class="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600"
+              >
+                Edit
+              </button>
+              <button
+                (click)="deleteProduct(product.productId)"
+                class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
+              >
+                Delete
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination Controls -->
+  <div
+    class="flex justify-center h-[38px] pt-1 fixed bottom-0 left-0 right-0 bg-white z-10 mb-[-2]"
+  >
+    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+  </div>
+</div>

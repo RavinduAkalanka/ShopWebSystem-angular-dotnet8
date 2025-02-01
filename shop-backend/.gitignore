@@ -1,0 +1,71 @@
+# ASP.NET Core
+/bin/
+/obj/
+/wwwroot/
+
+# User-specific files
+.vs/
+.vscode/
+.idea/
+.user/
+.userosscache/
+.suo
+.sln.docstates
+
+# ASP.NET configuration files
+appsettings.Development.json
+appsettings.Production.json
+appsettings.json
+
+# Environment variable files
+.env
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Dd]ist/
+[Dd]istPublic/
+[Dd]ebug-linux/
+[Dd]ebug-windows/
+[Dd]ebug-macos/
+[Dd]ebug-netcoreapp3.1/
+
+# ASP.NET Core publish folder
+publish/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# JetBrains Rider
+.idea/
+
+# Node.js dependencies
+node_modules/
+
+# NPM package logs
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# VS Code workspace settings
+.vscode/
+
+# macOS folder configurations
+.DS_Store
+
+# Windows Installer files
+Thumbs.db
+Desktop.ini
+
+# JetBrains Rider files
+.idea/
+
+# User secrets for ASP.NET Core
+secrets/
+
+# Temporary files created by Visual Studio
+.vs2019/
+.vs2017/

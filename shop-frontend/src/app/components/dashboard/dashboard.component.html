@@ -1,0 +1,53 @@
+<div class="container mx-auto mt-8 p-4">
+    <h1 class="text-3xl font-bold text-center">Welcome to My Shop Dashboard</h1>
+  
+    <div class="bg-gray-100 py-8 mt-4 px-4 rounded-lg flex justify-center">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Total Products -->
+        <div class="bg-gray-200 shadow-md rounded-lg w-[700px] p-6 flex flex-col justify-center items-center text-center">
+          <h5 class="text-lg font-medium text-gray-700">Total Products</h5>
+          <p class="text-4xl font-bold text-blue-700 mt-2">{{ totalProducts }}</p>
+        </div>
+  
+        <!-- Total Customers -->
+        <div class="bg-gray-200 shadow-md rounded-lg p-6 flex flex-col justify-center items-center text-center">
+          <h5 class="text-lg font-medium text-gray-700">Total Customers</h5>
+          <p class="text-4xl font-bold text-green-700 mt-2">{{ totalCustomers }}</p>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Low Stock Products -->
+    <div class="mt-8">
+      <h3 class="text-2xl font-semibold text-gray-800">Low Stock Products</h3>
+      <table class="w-full border border-gray-200 mt-4 text-sm text-left">
+        <thead class="bg-gray-100 text-gray-700">
+          <tr>
+            <th class="border px-4 py-2">Product Code</th>
+            <th class="border px-4 py-2">Product Name</th>
+            <th class="border px-4 py-2">Stock</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let product of lowStockProducts" class="even:bg-gray-50">
+            <td class="border px-4 py-2">{{ product.productCode }}</td>
+            <td class="border px-4 py-2">{{ product.productName }}</td>
+            <td class="border px-4 py-2">{{ product.stock }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <!-- Recently Added Customers -->
+    <div class="mt-8">
+      <h3 class="text-2xl font-semibold text-gray-800">Recently Added Customers</h3>
+      <ul class="mt-4 space-y-2">
+        <li *ngFor="let customer of recentCustomers" class="bg-white shadow p-4 rounded-lg flex justify-between items-center">
+          <span class="text-gray-800 font-medium">{{ customer.customerName }}</span>
+          <span class="text-gray-500">{{ customer.registrationDate | date : "dd MMM yyyy" }}</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <router-outlet></router-outlet>
+  
