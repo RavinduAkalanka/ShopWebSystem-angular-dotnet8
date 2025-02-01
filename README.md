@@ -1,6 +1,6 @@
-# ShopWebSystem
+# shopWebSystem
 
-**ShopWebSystem** is a web-based application built using Angular 18 and .NET 8. It provides a platform for managing products and customers, featuring user registration and authentication through JWT tokens. The project follows REST API principles and uses Tailwind CSS for UI design.
+**shopWebSystem** is a web-based application built using Angular 18 and .NET 8. It provides a platform for managing products and customers, featuring user registration and authentication through JWT tokens. The project follows REST API principles and uses Tailwind CSS for UI design.
 
 ## Features
 - CRUD operations for products and customers
@@ -67,15 +67,22 @@ cd shopWebSystem
 
 ## API Endpoints
 
-### Products- `GET /api/products`: Get all products
-- `POST /api/products`: Add a new product
-- `PUT /api/products/{id}`: Update a product
-- `DELETE /api/products/{id}`: Delete a product
+###Account
+- `POST /api/Account/register`: Register a new user
+- `POST /api/Account/login`: Login a user and receive a JWT token
+
+### Products
+- `GET /api/products/getall`: Get all products
+- `GET /api/products/{id}`: Get a product by ID
+- `POST /api/products/add`: Add a new product
+- `PUT /api/products/update/{id}`: Update a product
+- `DELETE /api/products/delete/{id}`: Delete a product
 
 ### Customers
-- `GET /api/customers`: Get all customers
-- `POST /api/customers`: Add a new customer
-- `PUT /api/customers/{id}`: Update a customer
-- `DELETE /api/customers/{id}`: Delete a customer
+- `GET /api/customer/getall`: Get all customers
+- `GET /api/customer/getbyid{id}`:  Get customer by ID
+- `POST /api/customer/add`: Add a new customer
+- `PUT /api/customer/update/{id}`: Update a customer
+- `DELETE /api/customer/delete/{id}`: Delete a customer
 
 
