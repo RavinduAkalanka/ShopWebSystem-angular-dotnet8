@@ -1,6 +1,6 @@
-# shopWebSystem
+# ShopWebSystem
 
-**shopWebSystem** is a web-based application built using Angular 18 and .NET 8. It provides a platform for managing products and customers, featuring user registration and authentication through JWT tokens. The project follows REST API principles and uses Tailwind CSS for UI design.
+**ShopWebSystem** is a web-based application built using Angular 18 and .NET 8. It provides a platform for managing products and customers, featuring user registration and authentication through JWT tokens. The project follows REST API principles and uses Tailwind CSS for UI design.
 
 ## Features
 - CRUD operations for products and customers
